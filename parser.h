@@ -6,6 +6,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <set>
 
 enum class SortLevel {
   Year ,
@@ -22,6 +23,8 @@ public:
   static std::string extractDate(const std::string &filename, SortLevel level);
 
   static void sortPictures(const std::string &directory, SortLevel level);
+
+  static std::set<std::string> getDirectoryStructure(const std::string &directory);
 };
 
 
