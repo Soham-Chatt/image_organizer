@@ -28,9 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3    
 
-      - name: Install dependencies
-        run: mkdir -p tests/test3_backup
-
       - name: Cache Google Test
         uses: actions/cache@v2
         with:
@@ -46,6 +43,9 @@ jobs:
             make
             sudo make install
           fi
+
+      - name: Debug - List tests directory contents
+        run: ls -la tests/
 
       - name: Test
         run: make test

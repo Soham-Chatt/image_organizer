@@ -47,22 +47,20 @@ protected:
   std::string backupDirectory = "tests/test3_backup"; // Path to backup directory
 
   void SetUp() override {
-    // Backup the test directory
-    if (fs::exists(backupDirectory)) {
-      fs::remove_all(backupDirectory); // Clear existing backup
-    }
+    // Check if test directory exists and create backup directory
+    ASSERT_TRUE(fs::exists(testDirectory)) << "Test directory does not exist";
+    fs::create_directories(backupDirectory); // This will create the directory if it doesn't exist
     fs::copy(testDirectory, backupDirectory, fs::copy_options::recursive);
   }
 
   void TearDown() override {
     // Restore the test directory from backup
-    if (fs::exists(testDirectory)) {
-      fs::remove_all(testDirectory); // Clear test directory
-    }
+    fs::remove_all(testDirectory); // This is safe because SetUp would have failed if testDirectory didn't exist
     fs::copy(backupDirectory, testDirectory, fs::copy_options::recursive);
-    fs::remove_all(backupDirectory); // Delete backup
+    fs::remove_all(backupDirectory);
   }
 };
+
 
 TEST_F(SortPicturesTest, SortByYear) {
   parser::silent = true; // Disable output
