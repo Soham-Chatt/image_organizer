@@ -29,6 +29,17 @@ std::string parser::extractDate(const std::string& filename, SortLevel level) {
 void parser::sortPictures(const std::string& directory, SortLevel level) {
   int ignoredFiles = 0;
 
+  // Vector to hold filenames
+  std::vector<std::string> filenames;
+
+  // Collect all filenames
+  for (const auto& entry : fs::directory_iterator(directory)) {
+    filenames.push_back(entry.path().filename().string());
+  }
+
+  // Sort filenames
+  std::sort(filenames.begin(), filenames.end());
+
   for (const auto& entry : fs::directory_iterator(directory)) {
     std::string filename = entry.path().filename().string();
     std::string datePart = extractDate(filename, level);
