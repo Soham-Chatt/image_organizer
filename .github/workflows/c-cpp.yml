@@ -44,10 +44,6 @@ jobs:
             sudo make install
           fi
 
-      - name: Debug - List tests directory contents
-        working-directory: tests/
-        run: ls 
-
       - name: Test
         run: make test
 
