@@ -19,7 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run
-        run: make run
+        run: |
+          echo "3" | make run
 
   test:
     runs-on: ubuntu-latest
