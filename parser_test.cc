@@ -18,16 +18,23 @@ protected:
 };
 
 TEST_P(ParserTest, ExtractYearFromFilenames) {
-auto files = GetParam();
-auto testFilenames = readFileLines(files.first);
-auto expectedYears = readFileLines(files.second);
+  auto files = GetParam();
+  auto testFilenames = readFileLines(files.first);
+  auto expectedYears = readFileLines(files.second);
 
-ASSERT_EQ(testFilenames.size(), expectedYears.size()) << "Test and reference files have different number of lines.";
+  ASSERT_EQ(testFilenames.size(), expectedYears.size()) << "Test and reference files have different number of lines.";
 
-for (size_t i = 0; i < testFilenames.size(); ++i) {
-EXPECT_EQ(parser::extractYear(testFilenames[i]), expectedYears[i]) << "Mismatch at line " << i + 1;
+  for (size_t i = 0; i < testFilenames.size(); ++i) {
+    try {
+      auto extractedYear = parser::extractYear(testFilenames[i]);
+      EXPECT_EQ(extractedYear, expectedYears[i]) << "Mismatch at line " << i + 1;
+    } catch (const std::exception& e) {
+      std::cerr << "Exception at line " << i + 1 << ": " << e.what() << std::endl;
+      throw; // Rethrow the exception to let the test fail
+    }
+  }
 }
-}
+
 
 INSTANTIATE_TEST_SUITE_P(
     MultipleFileTests,

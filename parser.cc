@@ -3,9 +3,10 @@
 namespace fs = std::filesystem;
 
 const std::vector<std::regex> parser::regexes = {
-    std::regex(R"(IMG-(\d{4})(\d{2})(\d{2})-)"), // IMG-YYYYMMDD
-    std::regex(R"((\d{4})(\d{2})(\d{2})_)")     // YYYYMMDD_
+    std::regex(R"(IMG-(\d{4})(\d{2})(\d{2})-)"), // IMG-YYYYMMDD-*
+    std::regex(R"((\d{4})(\d{2})(\d{2}).*)")     // YYYYMMDD*
 };
+
 
 std::string parser::extractYear(const std::string& filename) {
   std::smatch matches;
