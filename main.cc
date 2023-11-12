@@ -4,9 +4,10 @@
 void menu() {
   std::string directory;
   std::string filename;
-  std::string userInput;
+  int sortingType;
 
   bool exit = false;
+  bool validSortingInput = false;
 
   while (!exit) {
     std::cout << "Choose an option:" << std::endl;
@@ -34,20 +35,32 @@ void menu() {
           return;
         }
 
-        std::cout << std::endl << "How would you like to organize it? (Year or Month)" << std::endl;
-        std::cin >> userInput;
+        std::cout << std::endl << "How would you like to organize it?\n1.Year\n2.Month" << std::endl;
+        std::cin >> sortingType;
 
         SortLevel sortLevel;
 
-        if (userInput == "Year") sortLevel = SortLevel::Year;
-        else if (userInput == "Month") sortLevel = SortLevel::Month;
-        else {
-          std::cerr << "Invalid input. Please enter 'Year' or 'Month'." << std::endl;
-          return;
+        while (!validSortingInput) {
+          if (sortingType == 1) {
+            sortLevel = SortLevel::Year;
+            validSortingInput = true;
+            break;
+          }
+          else if (sortingType == 2) {
+            sortLevel = SortLevel::Month;
+            validSortingInput = true;
+            break;
+          }
+          else {
+            std::cerr << "Invalid input. Please enter '1' or '2'." << std::endl;
+            break;
+          }
         }
 
-        std::cout << "Organizing by " << userInput << std::endl;
+
+        std::cout << "Organizing by " << ((sortingType == 1) ? "year" : "month") << std::endl;
         parser::sortPictures(directory, sortLevel);
+        parser::getDirectoryStructure(directory);
         break;
       case 2:
         std::cout << std::endl << "Enter a filename to test:" << std::endl;

@@ -64,35 +64,28 @@ protected:
   }
 };
 
-TEST_F(SortPicturesTest, SortByYearWithReferenceOutput) {
-  std::stringstream buffer;
-  std::streambuf* prevcerrbuf = std::cerr.rdbuf(buffer.rdbuf());
-
+TEST_F(SortPicturesTest, SortByYear) {
+  parser::silent = true; // Disable output
   parser::sortPictures(testDirectory, SortLevel::Year);
 
-  std::cerr.rdbuf(prevcerrbuf);
+  auto actualStructure = parser::getDirectoryStructure(testDirectory);
+  auto expectedStructure = parser::getDirectoryStructure("tests/reference3year"); // Replace with the path to your expected structure directory
 
-  std::ifstream refFile("tests/reference3year.txt");
-  std::stringstream refContent;
-  refContent << refFile.rdbuf();
-
-  EXPECT_EQ(buffer.str(), refContent.str()) << "The output of sortPictures (Year) does not match the reference.";
+  EXPECT_EQ(actualStructure, expectedStructure) << "Directory structure after sorting by year does not match the expected structure.";
+  parser::silent = false;
 }
 
-TEST_F(SortPicturesTest, SortByMonthWithReferenceOutput) {
-  std::stringstream buffer;
-  std::streambuf* prevcerrbuf = std::cerr.rdbuf(buffer.rdbuf());
-
+TEST_F(SortPicturesTest, SortByMonth) {
+  parser::silent = true; // Disable output
   parser::sortPictures(testDirectory, SortLevel::Month);
 
-  std::cerr.rdbuf(prevcerrbuf);
+  auto actualStructure = parser::getDirectoryStructure(testDirectory);
+  auto expectedStructure = parser::getDirectoryStructure("tests/reference3month"); // Replace with the path to your expected structure directory
 
-  std::ifstream refFile("tests/reference3month.txt");
-  std::stringstream refContent;
-  refContent << refFile.rdbuf();
-
-  EXPECT_EQ(buffer.str(), refContent.str()) << "The output of sortPictures (Month) does not match the reference.";
+  EXPECT_EQ(actualStructure, expectedStructure) << "Directory structure after sorting by month does not match the expected structure.";
+  parser::silent = false;
 }
+
 
 
 INSTANTIATE_TEST_SUITE_P(

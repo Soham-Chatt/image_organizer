@@ -29,17 +29,6 @@ std::string parser::extractDate(const std::string& filename, SortLevel level) {
 void parser::sortPictures(const std::string& directory, SortLevel level) {
   int ignoredFiles = 0;
 
-  // Vector to hold filenames
-  std::vector<std::string> filenames;
-
-  // Collect all filenames
-  for (const auto& entry : fs::directory_iterator(directory)) {
-    filenames.push_back(entry.path().filename().string());
-  }
-
-  // Sort filenames
-  std::sort(filenames.begin(), filenames.end());
-
   for (const auto& entry : fs::directory_iterator(directory)) {
     std::string filename = entry.path().filename().string();
     std::string datePart = extractDate(filename, level);
@@ -75,10 +64,22 @@ void parser::sortPictures(const std::string& directory, SortLevel level) {
     }
   }
 
-  if (ignoredFiles > 0) {
+  if (!silent) {
+    if (ignoredFiles > 0) {
+      std::cerr << "WARNING: Could not parse the date for all files. Number of ignored files: " << ignoredFiles << std::endl;
+    }
     std::cout << std::endl;
-    std::cerr << "WARNING: Could not parse the date for all files. Number of ignored files: " << ignoredFiles << std::endl;
   }
+}
 
-  std::cout << std::endl;
+std::set<std::string> parser::getDirectoryStructure(const std::string& directory) {
+  std::set<std::string> structure;
+  for (const auto& entry : fs::recursive_directory_iterator(directory)) {
+    if (entry.is_regular_file()) {
+      // Get the relative path from the test directory
+      auto relativePath = fs::relative(entry.path(), directory);
+      structure.insert(relativePath.string());
+    }
+  }
+  return structure;
 }
