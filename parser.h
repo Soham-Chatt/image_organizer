@@ -7,14 +7,21 @@
 #include <filesystem>
 #include <vector>
 
+enum class SortLevel {
+  Year ,
+  Month,
+};
+
 class parser {
 private:
   static const std::vector<std::regex> regexes;
 
 public:
-  static std::string extractYear(const std::string& filename);
+  static bool silent;
 
-  static void sortPictures(const std::string& directory);
+  static std::string extractDate(const std::string &filename, SortLevel level);
+
+  static void sortPictures(const std::string &directory, SortLevel level);
 };
 
 
