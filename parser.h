@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <vector>
 #include <set>
+#include <filesystem>
 
 enum class SortLevel {
   Year ,
@@ -19,6 +20,7 @@ private:
 
 public:
   static bool silent;
+  static bool backup;
 
   static std::string extractDate(const std::string &filename, SortLevel level);
 

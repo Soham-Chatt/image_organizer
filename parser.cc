@@ -3,6 +3,7 @@
 namespace fs = std::filesystem;
 
 bool parser::silent = false;
+bool parser::backup = false;
 
 const std::vector<std::regex> parser::regexes = {
     std::regex(R"(IMG-(\d{4})(\d{2})(\d{2})-)"), // IMG-YYYYMMDD-*

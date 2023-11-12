@@ -1,6 +1,8 @@
 #include <iostream>
 #include "parser.h"
 
+namespace fs = std::filesystem;
+
 void organizeDirectory() {
   std::string directory;
   int sortingType;
@@ -12,6 +14,19 @@ void organizeDirectory() {
   if (!std::filesystem::exists(directory)) {
     std::cerr << "Directory does not exist" << std::endl;
     return;
+  } else if (parser::backup) {
+    std::string backupDirectory = directory + "_backup";
+    fs::create_directory(backupDirectory);
+    // Copy files from the original directory to the backup directory
+    for (const auto& entry : fs::directory_iterator(directory)) {
+      try {
+        fs::copy(entry.path(), backupDirectory + "/" + entry.path().filename().string());
+      } catch (const fs::filesystem_error& e) {
+        std::cerr << "Error copying file: " << e.what() << std::endl;
+        return;
+      }
+    }
+    std::cout << "Backup created at " << backupDirectory << std::endl;
   }
 
   std::cout << std::endl << "How would you like to organize it?\n1. Year\n2. Month" << std::endl;
@@ -71,9 +86,32 @@ void menu() {
   }
 }
 
+void handleFlags(int argc, char*argv[]) {
+  for (int i = 1; i < argc; ++i) {
+    std::string arg = argv[i];
+    // Check if the argument starts with a dash
+    if (arg[0] == '-') {
+      // Iterate over each character in the argument string
+      for (char flag : arg.substr(1)) {
+        switch (flag) {
+          case 's':
+            parser::silent = true;
+            std::cout << "Silent mode enabled" << std::endl;
+            break;
+          case 'b':
+            parser::backup = true;
+            std::cout << "Backup enabled" << std::endl;
+            break;
+          default:
+            throw std::invalid_argument("Invalid flag: " + std::string(1, flag));
+        }
+      }
+    }
+  }
+}
+
 int main(int argc, char*argv[]) {
-  // Silent flag (-s) means no output
-  (argc > 1 && std::string(argv[1]) == "-s") ? parser::silent = true : parser::silent = false;
+  handleFlags(argc, argv);
   menu();
   return 0;
 }
