@@ -26,7 +26,7 @@ TEST_P(ParserTest, ExtractYearFromFilenames) {
 
   for (size_t i = 0; i < testFilenames.size(); ++i) {
     try {
-      auto extractedYear = parser::extractYear(testFilenames[i]);
+      auto extractedYear = parser::extractDate(testFilenames[i], SortLevel::Year);
       EXPECT_EQ(extractedYear, expectedYears[i]) << "Mismatch at line " << i + 1;
     } catch (const std::exception& e) {
       std::cerr << "Exception at line " << i + 1 << ": " << e.what() << std::endl;

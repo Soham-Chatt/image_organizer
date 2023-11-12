@@ -4,6 +4,8 @@
 void menu() {
   std::string directory;
   std::string filename;
+  std::string userInput;
+
   bool exit = false;
 
   while (!exit) {
@@ -26,14 +28,31 @@ void menu() {
       case 1:
         std::cout << "Which directory would you like to organize?" << std::endl;
         std::cin >> directory;
-        std::cout << "Organizing " << directory << "..." << std::endl;
+        // Check if dir exists
+        if (!std::filesystem::exists(directory)) {
+          std::cerr << "Directory does not exist" << std::endl;
+          return;
+        }
 
-        parser::sortPictures(directory);
+        std::cout << "How would you like to organize it? (Year or Month)" << std::endl;
+        std::cin >> userInput;
+
+        SortLevel sortLevel;
+
+        if (userInput == "Year") sortLevel = SortLevel::Year;
+        else if (userInput == "Month") sortLevel = SortLevel::Month;
+        else {
+          std::cerr << "Invalid input. Please enter 'Year' or 'Month'." << std::endl;
+          return;
+        }
+
+        std::cout << "Organizing by " << userInput << std::endl;
+        parser::sortPictures(directory, sortLevel);
         break;
       case 2:
         std::cout << "Enter a filename to test:" << std::endl;
         std::cin >> filename;
-        std::cout << "Extracted year: " << parser::extractYear(filename) << std::endl;
+        std::cout << "Extracted date: " << parser::extractDate(filename, SortLevel::Month) << std::endl;
         break;
       case 3:
         std::cout << "Exiting..." << std::endl;
@@ -44,7 +63,9 @@ void menu() {
   }
 }
 
-int main() {
+int main(int argc, char*argv[]) {
+  // Silent flag (-s) means no output
+  (argc > 1 && std::string(argv[1]) == "-s") ? parser::silent = true : parser::silent = false;
   menu();
   return 0;
 }
