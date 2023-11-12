@@ -33,8 +33,8 @@ INSTANTIATE_TEST_SUITE_P(
     MultipleFileTests,
     ParserTest,
     ::testing::Values(
-    std::make_pair("test1.txt", "reference1.txt"),
-    std::make_pair("test2.txt", "reference2.txt")
+    std::make_pair("tests/test1.txt", "tests/reference1.txt"),
+    std::make_pair("tests/test2.txt", "tests/reference2.txt")
 ),
 [](const testing::TestParamInfo<ParserTest::ParamType>& info) {
 // Generate a name based on the index of the test case
