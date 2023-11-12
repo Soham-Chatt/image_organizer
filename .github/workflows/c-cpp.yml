@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3    
 
       - name: Install dependencies
         run: mkdir -p tests/test3_backup
@@ -34,9 +34,9 @@ jobs:
       - name: Cache Google Test
         uses: actions/cache@v2
         with:
-          path: /usr/local/lib/libgtest*
-          key: ${{ runner.os }}-googletest
-
+         path: /usr/local/lib/libgtest*
+         key: ${{ runner.os }}-googletest
+        
       - name: Download and Build Google Test
         run: |
           if [ ! -f /usr/local/lib/libgtest_main.a ]; then
