@@ -10,11 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: make
-      run: make
+      - uses: actions/checkout@v3
+      - name: make
+        run: make
 
-  run: 
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,20 +27,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          eol: 'LF'
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y g++ make cmake
+        run: mkdir -p tests/test3_backup
+
+      - name: Cache Google Test
+        uses: actions/cache@v2
+        with:
+          path: /usr/local/lib/libgtest*
+          key: ${{ runner.os }}-googletest
 
       - name: Download and Build Google Test
         run: |
-          git clone https://github.com/google/googletest.git
-          cd googletest
-          cmake .
-          make
-          sudo make install
+          if [ ! -f /usr/local/lib/libgtest_main.a ]; then
+            git clone https://github.com/google/googletest.git
+            cd googletest
+            cmake .
+            make
+            sudo make install
+          fi
 
       - name: Test
         run: make test
+
 
