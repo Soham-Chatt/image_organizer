@@ -26,7 +26,7 @@ void menu() {
 
     switch(choice) {
       case 1:
-        std::cout << "Which directory would you like to organize?" << std::endl;
+        std::cout << std::endl << "Which directory would you like to organize?" << std::endl;
         std::cin >> directory;
         // Check if dir exists
         if (!std::filesystem::exists(directory)) {
@@ -34,7 +34,7 @@ void menu() {
           return;
         }
 
-        std::cout << "How would you like to organize it? (Year or Month)" << std::endl;
+        std::cout << std::endl << "How would you like to organize it? (Year or Month)" << std::endl;
         std::cin >> userInput;
 
         SortLevel sortLevel;
@@ -50,7 +50,7 @@ void menu() {
         parser::sortPictures(directory, sortLevel);
         break;
       case 2:
-        std::cout << "Enter a filename to test:" << std::endl;
+        std::cout << std::endl << "Enter a filename to test:" << std::endl;
         std::cin >> filename;
         std::cout << "Extracted date: " << parser::extractDate(filename, SortLevel::Month) << std::endl;
         break;

@@ -22,11 +22,13 @@ std::string parser::extractDate(const std::string& filename, SortLevel level) {
       }
     }
   }
-  throw std::invalid_argument("No date found in filename");
+  return ""; // Return empty string for non-matching files
 }
 
 
 void parser::sortPictures(const std::string& directory, SortLevel level) {
+  int ignoredFiles = 0;
+
   for (const auto& entry : fs::directory_iterator(directory)) {
     std::string filename = entry.path().filename().string();
     std::string datePart = extractDate(filename, level);
@@ -57,7 +59,15 @@ void parser::sortPictures(const std::string& directory, SortLevel level) {
       // Rename/move the file
       fs::rename(entry.path(), newPath);
       if (!silent) std::cout << "Moved " << filename << " to " << newPath << std::endl;
+    } else {
+      ignoredFiles++;
     }
   }
+
+  if (ignoredFiles > 0) {
+    std::cout << std::endl;
+    std::cerr << "WARNING: Could not parse the date for all files. Number of ignored files: " << ignoredFiles << std::endl;
+  }
+
   std::cout << std::endl;
 }

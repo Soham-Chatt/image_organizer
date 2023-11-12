@@ -25,15 +25,19 @@ TEST_P(ParserTest, ExtractYearFromFilenames) {
   ASSERT_EQ(testFilenames.size(), expectedYears.size()) << "Test and reference files have different number of lines.";
 
   for (size_t i = 0; i < testFilenames.size(); ++i) {
-    try {
-      auto extractedYear = parser::extractDate(testFilenames[i], SortLevel::Year);
+    auto extractedYear = parser::extractDate(testFilenames[i], SortLevel::Year);
+
+    // Check if the extracted year matches the expected year
+    if (!expectedYears[i].empty()) {
+      // If the expected year is not empty, we expect a match
       EXPECT_EQ(extractedYear, expectedYears[i]) << "Mismatch at line " << i + 1;
-    } catch (const std::exception& e) {
-      std::cerr << "Exception at line " << i + 1 << ": " << e.what() << std::endl;
-      throw; // Rethrow the exception to let the test fail
+    } else {
+      // If the expected year is empty, we expect the extracted year to be empty
+      EXPECT_TRUE(extractedYear.empty()) << "Expected no date at line " << i + 1 << " but got " << extractedYear;
     }
   }
 }
+
 
 
 INSTANTIATE_TEST_SUITE_P(
