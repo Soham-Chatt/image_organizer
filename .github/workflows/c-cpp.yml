@@ -28,9 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: mkdir -p tests/test3_backup | mkdir -p tests/test3 | mkdir -p tests/reference3month | mkdir -p tests/reference3year
-
       - name: Cache Google Test
         uses: actions/cache@v2
         with:
