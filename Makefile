@@ -6,6 +6,7 @@ CXXFLAGS = -Wall -Wextra -O3 -std=c++17
 SOURCES = main.cc parser.cc
 OBJECTS = $(SOURCES:.cc=.o)
 EXECUTABLE = main
+RUN_EXECUTABLE = run
 
 # Additional test files
 TEST_SOURCES = parser_test.cc
@@ -20,9 +21,9 @@ $(EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Run target
-run: $(filter-out %_test.o, $(OBJECTS))
+$(RUN_EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
-	./$(EXECUTABLE)
+	./$(RUN_EXECUTABLE)
 
 # Test
 $(TEST_EXECUTABLE): $(filter-out main.o, $(OBJECTS)) $(TEST_OBJECTS)
