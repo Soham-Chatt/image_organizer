@@ -45,7 +45,8 @@ jobs:
           fi
 
       - name: Debug - List tests directory contents
-        run: ls -la tests/
+        working-directory: tests/
+        run: ls 
 
       - name: Test
         run: make test
