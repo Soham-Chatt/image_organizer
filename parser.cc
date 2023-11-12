@@ -58,7 +58,7 @@ void parser::sortPictures(const std::string& directory, SortLevel level) {
 
       // Rename/move the file
       fs::rename(entry.path(), newPath);
-      if (!silent) std::cout << "Moved " << filename << " to " << newPath << std::endl;
+      if (!silent) std::cerr << "Moved " << filename << " to " << newPath << std::endl;
     } else {
       ignoredFiles++;
     }
