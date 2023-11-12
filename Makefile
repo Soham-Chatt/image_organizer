@@ -22,7 +22,7 @@ $(EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
 # Run target
 run: $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
-	./main
+	./$(EXECUTABLE)
 
 # Test
 $(TEST_EXECUTABLE): $(filter-out main.o, $(OBJECTS)) $(TEST_OBJECTS)
