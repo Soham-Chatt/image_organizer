@@ -20,7 +20,7 @@ $(EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Run target
-$(EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
+run: $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
 	./$(EXECUTABLE)
 
