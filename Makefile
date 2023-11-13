@@ -6,7 +6,6 @@ CXXFLAGS = -Wall -Wextra -O3 -std=c++17
 SOURCES = main.cc parser.cc
 OBJECTS = $(SOURCES:.cc=.o)
 EXECUTABLE = main
-RUN_EXECUTABLE = run
 
 # Additional test files
 TEST_SOURCES = parser_test.cc
@@ -21,9 +20,9 @@ $(EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Run target
-$(RUN_EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
+$(EXECUTABLE): $(filter-out %_test.o, $(OBJECTS))
 	$(CXX) $(CXXFLAGS) $^ -o $@
-	./$(RUN_EXECUTABLE)
+	./$(EXECUTABLE)
 
 # Test
 $(TEST_EXECUTABLE): $(filter-out main.o, $(OBJECTS)) $(TEST_OBJECTS)
@@ -36,7 +35,7 @@ $(TEST_EXECUTABLE): $(filter-out main.o, $(OBJECTS)) $(TEST_OBJECTS)
 
 # Clean
 clean:
-	rm -f $(OBJECTS) $(TEST_OBJECTS) $(EXECUTABLE) $(TEST_EXECUTABLE) $(RUN_EXECUTABLE)
+	rm -f $(OBJECTS) $(TEST_OBJECTS) $(EXECUTABLE) $(TEST_EXECUTABLE)
 
 # Phony targets
 .PHONY: all clean
